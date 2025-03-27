@@ -1,5 +1,7 @@
 package Clasificador;
 
+import java.util.Vector;
+
 public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E>{
 
 	protected Vector<E> data; // the data, kept in heap order
@@ -108,5 +110,29 @@ public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E>{
 		data.setSize(data.size()-1);
 		if (data.size() > 1) pushDownRoot(0);
 		return minVal;
+	}
+
+	@Override
+	public E getFirst() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'getFirst'");
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
+	}
+
+	@Override
+	public int size() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'size'");
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'clear'");
 	}
 }
