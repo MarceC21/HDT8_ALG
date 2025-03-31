@@ -1,0 +1,14 @@
+Juan Perez, fractura de pierna, C
+Maria Ramirez, apendicitis, A
+Lorenzo Toledo, chikunguya, C
+Carmen Sarmientos, dolores de parto, B
+Roberto Méndez, infarto al miocardio, A
+Luisa Fernández, neumonía severa, B
+Carlos Gutiérrez, esguince de tobillo, D
+Ana López, migraña, E
+Fernando Castillo, insuficiencia renal aguda, A
+Sofía Herrera, fractura de muñeca, C
+Eduardo Vargas, dengue clásico, D
+Patricia Ríos, hipertensión arterial descontrolada, B
+Javier Ortega, laringitis, E
+Mónica Salazar, intoxicación alimentaria, E
