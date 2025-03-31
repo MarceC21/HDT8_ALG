@@ -43,21 +43,18 @@ public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E>{
 		return (2*i+1) + 1;
 	}
 
-	protected void percolateUp(int leaf)
+	protected void percolateUp(int leaf) {
 	// pre: 0 <= leaf < size
 	// post: moves node at index leaf up to appropriate position
-	{
-		int parent = parent(leaf);
-		E value = data.get(leaf);
-		while (leaf > 0 &&
-		(value.compareTo(data.get(parent)) < 0))
-		{
-			data.set(leaf,data.get(parent));
-			leaf = parent;
-			parent = parent(leaf);
-		}
-		data.set(leaf,value);
-	}
+        int parent = parent(leaf);
+        E value = data.get(leaf);
+        while (leaf > 0 && (value.compareTo(data.get(parent)) < 0)) {
+            data.set(leaf, data.get(parent));
+            leaf = parent;
+            parent = parent(leaf);
+        }
+        data.set(leaf, value);
+    }
 
 	public void add(E value)
 	// pre: value is non-null comparable
@@ -66,6 +63,7 @@ public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E>{
 		data.add(value);
 		percolateUp(data.size()-1);
 	}
+
 
 	protected void pushDownRoot(int root)
 	// pre: 0 <= root < size
@@ -101,6 +99,7 @@ public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E>{
 		}
 	}
 
+	@Override 
 	public E remove()
 	// pre: !isEmpty()
 	// post: returns and removes minimum value from queue
@@ -112,27 +111,30 @@ public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E>{
 		return minVal;
 	}
 
-	@Override
-	public E getFirst() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getFirst'");
-	}
+    @Override
+    public E getFirst() {
+        if (isEmpty()) {
+            throw new IllegalStateException("La cola de prioridad está vacía");
+        }
+        return data.get(0);
+    }
 
-	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'isEmpty'");
-	}
+    @Override
+    public boolean isEmpty() {
+        return data.isEmpty();
+    }
 
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'size'");
-	}
+    @Override
+    public int size() {
+        return data.size();
+    }
 
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'clear'");
-	}
+    @Override
+    public void clear() {
+        data.clear();
+    }
+
 }
+
+
+
