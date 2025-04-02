@@ -2,9 +2,9 @@
 ===============================================================
 Simulación
 ===============================================================
-Autor: []
-Fecha: []
-Descripción:
+Autor: Jorge Villeda y Marcela Castillo
+Fecha: 03/04/25
+Descripción: Clase modelo de cada emergencia.
 
 
 
