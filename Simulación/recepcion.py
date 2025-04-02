@@ -11,28 +11,59 @@ Descripción: Clase controlador que simula la recepción.
 ===============================================================
 """
 
-import random
 import simpy
-#importar Emergencia cuando este hecha 
+import random
+from Emergencia import Emergencia
 
 class Recepcion:
-    def __init__(self, env, num_enfermeras, num_doctores, num_rayos_x, num_laboratorio):
+    def __init__(self, env, num_doctores, num_enfermeras, num_rayos_x, num_laboratorio):
         self.env = env
-        self.enfermeras = simpy.PriorityResource(env, num_enfermeras)
-        self.doctores = simpy.PriorityResource(env, num_doctores)
-        self.rayos_x = simpy.PriorityResource(env, num_rayos_x)
-        self.laboratorio = simpy.PriorityResource(env, num_laboratorio)
+        self.doctores = simpy.PriorityResource(env, capacity=num_doctores)
+        self.enfermeras = simpy.Resource(env, capacity=num_enfermeras)
+        self.rayos_x = simpy.PriorityResource(env, capacity=num_rayos_x)
+        self.laboratorio = simpy.PriorityResource(env, capacity=num_laboratorio)
 
     def atender_paciente(self, paciente):
-        yield self.env.process(paciente.atender(self.enfermeras, self.doctores, self.rayos_x, self.laboratorio))
-        print(f'{paciente.nombre} atendido en {self.env.now - paciente.tiempo_llegada:.2f} minutos')
+        llegada = self.env.now
+        print(f"{paciente} llega a urgencias en t={llegada:.2f}")
 
+        # Evaluación de la severidad
+        with self.enfermeras.request() as req:
+            yield req
+            yield self.env.timeout(10)  # Tiempo de evaluación
+            print(f"{paciente} fue evaluado en t={self.env.now:.2f}")
 
-def generar_pacientes(env, recepcion, intervalo_llegada):
-    paciente_id = 0
-    while True: #En este caso si vale porque el límite lo ponemos en el Main.py
-        yield env.timeout(random.expovariate(1.0 / intervalo_llegada))
-        severidad = random.randint(1, 5)
-        paciente = Emergencia(env, f'Paciente {paciente_id}', severidad)
-        env.process(recepcion.atender_paciente(paciente))
-        paciente_id += 1
+        # Los pacientes con severidad 1 tienen más prioridad (valor más bajo)
+        prioridad = 6 - paciente.severidad  # Invertimos la prioridad (1 a 5, 5 a 1)
+        
+        with self.doctores.request(priority=prioridad) as req:
+            yield req
+            tiempo_atencion = random.randint(15, 30)
+            yield self.env.timeout(tiempo_atencion)
+            print(f"{paciente} atendido por doctor en t={self.env.now:.2f}")
+
+        # Exámenes si son necesarios
+        if random.random() < 0.3: #30% de probabilidad
+            with self.rayos_x.request(priority=prioridad) as req:
+                yield req
+                yield self.env.timeout(20)
+                print(f"{paciente} pasó por Rayos X en t={self.env.now:.2f}")
+
+        if random.random() < 0.5: #50% de probabilidad
+            with self.laboratorio.request(priority=prioridad) as req:
+                yield req
+                yield self.env.timeout(25)
+                print(f"{paciente} pasó por Laboratorio en t={self.env.now:.2f}")
+
+        # Paciente se va sanito y contento
+        tiempo_total = self.env.now - llegada
+        print(f"{paciente} salió del hospital en t={self.env.now:.2f} (Total: {tiempo_total:.2f} min)")
+
+    def llegada_pacientes(self, tasa_llegada):
+        #Genera los pacientes para nuestra sinmulación
+        id_paciente = 0
+        while True:
+            yield self.env.timeout(random.expovariate(1.0 / tasa_llegada))
+            paciente = Emergencia(id_paciente)
+            self.env.process(self.atender_paciente(paciente))
+            id_paciente += 1

@@ -9,15 +9,23 @@ Descripción: Clase main y vista.
 ===============================================================
 """
 
-from Recepcion import Recepcion, generar_pacientes
-import simpy 
+import simpy
+from Recepcion import Recepcion
 
+# Parámetros de la simulación
+TIEMPO_SIMULACION = 300  # 300 minutos (5 horas)
+TASA_LLEGADA = 5  # Un paciente cada 5 minutos
+NUM_DOCTORES = 2
+NUM_ENFERMERAS = 3
+NUM_RAYOS_X = 1
+NUM_LABORATORIO = 1
 
-def main():
-    env = simpy.Environment()
-    recepcion = Recepcion(env, num_enfermeras=3, num_doctores=2, num_rayos_x=1, num_laboratorio=1)
-    env.process(generar_pacientes(env, recepcion, intervalo_llegada=5))
-    env.run(until=100)
+# Crear el entorno de SimPy
+env = simpy.Environment()
+hospital = Recepcion(env, NUM_DOCTORES, NUM_ENFERMERAS, NUM_RAYOS_X, NUM_LABORATORIO)
 
-if __name__ == "__main__":
-    main()
+# Iniciar la simulación
+env.process(hospital.llegada_pacientes(TASA_LLEGADA))
+print("Iniciando simulación de emergencias del IGGS\n")
+env.run(until=TIEMPO_SIMULACION)
+print("\nSimulación ya terminó")
