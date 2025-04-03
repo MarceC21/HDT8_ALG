@@ -13,7 +13,8 @@ Descripción: Clase controlador que simula la recepción.
 
 import simpy
 import random
-from Emergencia import Emergencia
+from emergencia import Emergencia
+
 
 class Recepcion:
     def __init__(self, env, num_doctores, num_enfermeras, num_rayos_x, num_laboratorio):
@@ -23,24 +24,28 @@ class Recepcion:
         self.rayos_x = simpy.PriorityResource(env, capacity=num_rayos_x)
         self.laboratorio = simpy.PriorityResource(env, capacity=num_laboratorio)
 
+
+    #Función principal que atiende al paciente
     def atender_paciente(self, paciente):
+        #Llegada
         llegada = self.env.now
         print(f"{paciente} llega a urgencias en t={llegada:.2f}")
 
-        # Evaluación de la severidad
+        # Evaluación inicial con una enfermera
         with self.enfermeras.request() as req:
             yield req
-            yield self.env.timeout(10)  # Tiempo de evaluación
+            yield self.env.timeout(3)  # Evaluación inicial
             print(f"{paciente} fue evaluado en t={self.env.now:.2f}")
 
-        # Los pacientes con severidad 1 tienen más prioridad (valor más bajo)
         prioridad = 6 - paciente.severidad  # Invertimos la prioridad (1 a 5, 5 a 1)
-        
+
+
         with self.doctores.request(priority=prioridad) as req:
             yield req
             tiempo_atencion = random.randint(15, 30)
             yield self.env.timeout(tiempo_atencion)
             print(f"{paciente} atendido por doctor en t={self.env.now:.2f}")
+
 
         # Exámenes si son necesarios
         if random.random() < 0.3: #30% de probabilidad

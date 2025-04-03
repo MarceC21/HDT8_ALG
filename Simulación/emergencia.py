@@ -18,4 +18,4 @@ class Emergencia:
         self.severidad = random.randint(1, 5)  # Nivel de urgencia (1 es más grave)
     
     def __str__(self):
-        return f"Paciente {self.id_paciente} - Severidad {self.severidad}"
+        return f"Paciente {self.id_paciente} (Severidad {self.severidad})"
