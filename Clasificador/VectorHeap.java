@@ -1,5 +1,7 @@
 package Clasificador;
 
+
+// Para esta clase se uso de guia el código proporcionado por el libro de JavaStructures
 import java.util.Vector;
 
 public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E>{
