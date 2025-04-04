@@ -1,5 +1,14 @@
 package Clasificador;
-
+// Para esta clase se usó como recurso el libro de JavaStructures y el código de la interfaz proporcionado
+/**
+ * Interfaz PriorityQueue 
+ * ===============================================================
+ * Autor: Jorge Villeda y Marcela Castillo
+ * Fecha: 03/04/25
+ * Descripción: Interfaz PriorityQueue que define los métodos que se implementaran en las clases  .
+ *
+ * @param <E> Tipo de elementos que deben ser comparables.
+ */
 public interface PriorityQueue<E extends Comparable<E>>
 {
 	public E getFirst();

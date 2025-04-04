@@ -3,7 +3,17 @@ package Clasificador;
 
 // Para esta clase se uso de guia el código proporcionado por el libro de JavaStructures
 import java.util.Vector;
-
+/**
+ * PriorityQueue con Vector
+ * ===============================================================
+ * Autor: Jorge Villeda y Marcela Castillo
+ * Fecha: 03/04/25
+ * Descripción: Implementación de una cola de prioridad utilizando Vector. 
+ * Esta clase implementa la interfaz PriorityQueue
+ * definida dentro del paquete Clasificador.
+ *
+ * @param <E> Tipo de elementos que deben ser comparables.
+ */
 public class VectorHeap<E extends Comparable<E>> implements PriorityQueue<E>{
 
 	protected Vector<E> data; // the data, kept in heap order
